@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#101828">
+<link rel="manifest" href="manifest.json">
+<title>Rummy Social Demo</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f6f9;color:#172033;font-family:Arial,sans-serif}
+header{position:sticky;top:0;background:#101828;color:white;padding:14px 16px;z-index:3;display:flex;justify-content:space-between;align-items:center}
+main{padding:14px;max-width:700px;margin:auto}.card{background:white;border:1px solid #e5e7eb;border-radius:15px;padding:16px;margin:12px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{padding:15px;background:white;border-radius:14px;border:1px solid #e5e7eb}.stat b{display:block;font-size:22px;margin-top:5px}
+button,input{font:inherit}button{border:0;border-radius:10px;padding:11px 14px;font-weight:700;cursor:pointer}.primary{background:#315efb;color:#fff}.secondary{background:#eef2ff;color:#2345c6}.danger{background:#fff0ef;color:#b42318}
+input{width:100%;padding:12px;border:1px solid #d0d5dd;border-radius:10px;margin:6px 0 12px}
+.login{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(135deg,#101828,#243b53)}.login .card{width:min(420px,100%)}
+nav{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;position:sticky;bottom:0;background:white;padding:9px;border-top:1px solid #ddd}
+section{display:none}section.active{display:block}.muted{color:#667085;font-size:13px}.badge{display:inline-block;padding:5px 8px;border-radius:99px;background:#ecfdf3;color:#027a48;font-size:12px;font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:10px 7px;border-bottom:1px solid #eee;text-align:left}
+</style>
+</head>
+<body>
+<div id="login" class="login">
+ <div class="card">
+  <h2>🎮 Rummy Social</h2>
+  <p class="muted">Android-friendly demo / virtual coins</p>
+  <label>Email</label><input id="email" type="email" placeholder="आपका Gmail">
+  <label>Password</label><input id="password" type="password" placeholder="Password">
+  <button class="primary" style="width:100%" onclick="doLogin()">Login</button>
+  <p id="error" style="color:#b42318;display:none">Demo password: pooja@22</p>
+ </div>
+</div>
+
+<div id="app" style="display:none">
+<header><b>🎮 Rummy Social</b><button class="secondary" onclick="logout()">Logout</button></header>
+<main>
+<section id="home" class="active">
+ <h2>Home</h2>
+ <div class="grid">
+  <div class="stat">Virtual Coins<b>5,000</b></div>
+  <div class="stat">Games Played<b>24</b></div>
+ </div>
+ <div class="card"><h3>Play</h3><p class="muted">Practice / social rooms with virtual coins.</p><button class="primary" onclick="alert('Demo room created')">Join Game</button></div>
+</section>
+
+<section id="rooms"><h2>Rooms</h2><div id="roomList"></div></section>
+<section id="games"><h2>Games</h2><div class="card"><table><tr><th>Game</th><th>Players</th><th>Status</th></tr><tr><td>GM9021</td><td>4</td><td><span class="badge">Completed</span></td></tr><tr><td>GM9022</td><td>2</td><td><span class="badge">Live</span></td></tr></table></div></section>
+<section id="profile"><h2>Profile</h2><div class="card"><b>Demo Player</b><p class="muted">Location permission: not requested</p><p class="muted">This web app does not call the browser geolocation API.</p></div></section>
+
+<section id="admin">
+ <h2>Admin Control</h2>
+ <div class="card"><b>Users</b><p>12,540 total • 1,286 online</p><button class="secondary" onclick="alert('User management demo')">Manage Users</button></div>
+ <div class="card"><b>Rooms</b><p>148 rooms • 326 active games</p><button class="secondary" onclick="alert('Room management demo')">Manage Rooms</button></div>
+ <div class="card"><b>Virtual Coins</b><p>8,42,000 demo coins in circulation</p><button class="secondary" onclick="alert('Virtual coin ledger demo')">View Ledger</button></div>
+ <div class="card"><b>Game History</b><p>Audit logs are simulated in this demo.</p><button class="secondary" onclick="alert('Game history demo')">View History</button></div>
+</section>
+</main>
+<nav>
+ <button onclick="show('home')">Home</button><button onclick="show('rooms')">Rooms</button><button onclick="show('games')">Games</button><button onclick="show('profile')">Profile</button>
+</nav>
+</div>
+
+<script>
+const ADMIN_PASSWORD="pooja@22";
+function doLogin(){
+ const e=document.getElementById('email').value.trim();
+ const p=document.getElementById('password').value;
+ if(e && p===ADMIN_PASSWORD){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';}
+ else document.getElementById('error').style.display='block';
+}
+function logout(){location.reload()}
+function show(id){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+document.getElementById('roomList').innerHTML=[
+ ['RM210','Public','4/4','Open'],['RM211','Private','2/4','Playing'],['RM212','Public','3/4','Open']
+].map(r=>`<div class="card"><b>${r[0]}</b><p>${r[1]} • ${r[2]} players • ${r[3]}</p><button class="primary" onclick="alert('Demo room joined')">Join</button></div>`).join('');
+</script>
+</body>
+</html>
